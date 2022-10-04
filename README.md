@@ -43,4 +43,4 @@ To practise/learn 倉頡 (Cangjie) input 🀄
       - 港 = 水 廿 金 山 = "E" "T" "C" "U"
 2. Apply **spaced repetition learning** method for Cangjie training
   - [SM-2](https://www.supermemo.com/en/archives1990-2015/english/ol/sm2)
-  - [modified SM-2](https://www.blueraja.com/blog/477/a-better-spaced-repetition-learning-algorithm-sm2) ([implemented here](src\main\cangjie_training\learner.cljs))
+  - [modified SM-2](https://www.blueraja.com/blog/477/a-better-spaced-repetition-learning-algorithm-sm2) ([implemented here](src/main/cangjie_training/learner.cljs))

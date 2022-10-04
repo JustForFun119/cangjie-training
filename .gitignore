@@ -1,5 +1,5 @@
 node_modules/
-public/js
+# public/js
 
 /target
 /checkouts
@@ -24,7 +24,8 @@ src/*.yaml
 src/*.edn
 
 # dev extra
-.calva
-.clj-kondo
+.calva/
+.clj-kondo/
 .lsp/
+public/js/cljs-runtime/
 *.js.map
