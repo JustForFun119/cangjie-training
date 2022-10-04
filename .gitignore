@@ -1,0 +1,30 @@
+node_modules/
+public/js
+
+/target
+/checkouts
+/src/gen
+
+pom.xml
+pom.xml.asc
+*.iml
+*.jar
+*.log
+.shadow-cljs
+.idea
+.lein-*
+.nrepl-*
+.DS_Store
+
+.hgignore
+.hg/
+
+# cang jie dictionary source
+src/*.yaml
+src/*.edn
+
+# dev extra
+.calva
+.clj-kondo
+.lsp/
+*.js.map

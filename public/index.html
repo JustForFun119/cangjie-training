@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cangjie Training</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+        "Segoe UI Symbol";
+      height: 100vh;
+    }
+
+    /* symbol for anchor: open link on new tab */
+    a[target="_blank"]::after {
+      content: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVR42qXKwQkAIAxDUUdxtO6/RBQkQZvSi8I/pL4BoGw/XPkh4XigPmsUgh0626AjRsgxHTkUThsG2T/sIlzdTsp52kSS1wAAAABJRU5ErkJggg==);
+      padding-left: 0.5rem;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      a[target="_blank"]::after {
+        filter: invert(100%);
+      }
+    }
+  </style>
+  <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+  <script src="js/tailwindcss_3.1.8.js"></script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script src="js/main.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js');
+    }
+  </script>
+</body>
+
+</html>
