@@ -2,6 +2,8 @@
 
 Train my 倉頡 (Cangjie)
 
+[Try it](https://justforfun119.github.io/cangjie-training/public/index.html)
+
 # Thanks
 
 - 倉頡新星 https://gholk.github.io/cjns/index.html
@@ -21,6 +23,10 @@ Build app scripts: `npx shadow-cljs watch app` or `npx shadow-cljs compile app`
 
 1. Build app scripts: `npx shadow-cljs release app`
 2. Update workbox config for PWA (offline etc.): `npx workbox-cli generateSW workbox-config.js`
+
+# User Data
+
+Stored on user's browser local storage only
 
 # Why
 
