@@ -3,6 +3,9 @@ module.exports = {
 	globPatterns: [
 		'**/*.{html,js}'
 	],
+	globIgnores: [
+		'js/cljs-runtime/*'
+	],
 	swDest: 'public/sw.js',
 	ignoreURLParametersMatching: [
 		/^utm_/,
