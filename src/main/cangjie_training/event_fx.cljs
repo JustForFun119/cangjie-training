@@ -133,7 +133,7 @@
 
 (defmethod do-effect! :fx/persist-learner-db
   [_db {:keys [learner-db]}]
-  (log "saving..." learner-db)
+  (log "saving..." (clj->js learner-db))
   (model/persist-learner-db! learner-db))
 
 (defmethod do-effect! :fx/expand-learner-pool
@@ -169,7 +169,7 @@
                        false)
           on-key-down (fn [event]
                         ; disable Tab key moving keyboard focus away from page
-                        (when (= (.-code event) "Tab") (.preventDefault event))
+                        (when (#{"Tab" "/"} (.-key event)) (.preventDefault event))
                         ;; (log (.-code event))
                         (swap! *pressed-keys conj (.-code event)))]
       (rum/use-effect! ; react hook
