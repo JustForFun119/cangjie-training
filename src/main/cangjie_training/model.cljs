@@ -111,10 +111,11 @@
       (assoc model :question-char new-char :ans-parts [] :hint-count 0
              :parts-score (-> new-char split-radicals count (repeat 0) vec)
              :answered? false
+             :question-start-time (js/Date.now)
              :viz-page-size viz-page-size-compact))
     (do (log "no item to review!")
         (assoc model :question-char nil :ans-parts [] :hint-count 0
-               :parts-score nil :answered? false 
+               :parts-score nil :answered? false
                :viz-page-size viz-page-size-long :viz-page 1))))
 #_(->> @*learner-db
        (sort-by val compare-stat)

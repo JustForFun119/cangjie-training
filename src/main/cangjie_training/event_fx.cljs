@@ -125,11 +125,12 @@
 (defmulti do-effect! (fn [_model {:keys [fx-type]}] fx-type))
 
 (defmethod do-effect! :fx/update-learner-db
-  [{:keys [question-char parts-score]} {:keys [post-fx]}]
+  [{:keys [question-char parts-score question-start-time]} {:keys [post-fx]}]
   (let [grade (learner/grade-answer (get @*learner-db question-char)
-                                    parts-score)]
+                                    parts-score)
+        answer-time-taken-ms (- (js/Date.now) question-start-time)]
     (post-fx (swap! *learner-db update question-char
-                    learner/update-stat grade))))
+                    learner/update-stat grade (/ answer-time-taken-ms 1000)))))
 
 (defmethod do-effect! :fx/persist-learner-db
   [_db {:keys [learner-db]}]
@@ -138,7 +139,7 @@
 
 (defmethod do-effect! :fx/expand-learner-pool
   [_db {:keys [expand-count post-fx]}]
-  (if-let [new-chars (seq (model/new-chars-to-learn expand-count 
+  (if-let [new-chars (seq (model/new-chars-to-learn expand-count
                                                     @model/*learner-db))]
     (when (js/confirm
            (str "Add these " expand-count " characters to words pool:\n"
@@ -154,12 +155,12 @@
   (let [>message-chan (async/chan)]
     ;; app event loop
     (async/go-loop []
-      (swap! *model (fn [model message]
-                      (let [[next-model effect] (update-model model message)]
-                        (when effect (doseq [msg (do-effect! model effect)]
-                                       (async/put! >message-chan msg)))
-                        next-model))
-             (async/<! >message-chan))
+      (->> (async/<! >message-chan)
+           (swap! *model (fn [model message]
+                           (let [[next-model effect] (update-model model message)]
+                             (when effect (doseq [msg (do-effect! model effect)]
+                                            (async/put! >message-chan msg)))
+                             next-model))))
       (recur))
     ;; hook keyboard event
     (let [on-key-up  (fn [event]

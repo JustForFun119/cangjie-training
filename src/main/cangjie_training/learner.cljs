@@ -6,7 +6,7 @@
 
 (defprotocol SpacedRepetitionStat
   (grade-answer [this parts-score])
-  (update-stat [this grade])
+  (update-stat [this grade answer-time-taken-secs])
   (compare-stat [this other])
   (due-date [this])
   (need-review? [this])
@@ -26,7 +26,7 @@
           ; rescale to 0~5 for SM-2 algorithm
           (rescale [(* -0.5 part-count) part-count] [0 5])
           js/Math.round)))
-  (update-stat [_this grade]
+  (update-stat [_this grade _answer-time-taken-secs]
     (let [ef (+ ef (- 0.1 (* (- 5 grade) (+ 0.08 (* (- 5 grade) 0.02)))))
           _ (log "update-stat"
                  (- 0.1 (* (- 5 grade) (+ 0.08 (* (- 5 grade) 0.02))))
@@ -59,7 +59,7 @@
       (-> (apply + parts-score) ; sum of part scores as word score
           ; rescale to 0~1 for SM2+ algorithm
           (rescale [(* -0.5 part-count) part-count] [0 1]))))
-  (update-stat [_this rating]
+  (update-stat [_this rating answer-time-taken-secs]
     (let [now (js/Date.now)
           correct? (> rating 0.6)
           overdue (if correct?
@@ -70,7 +70,11 @@
           difficulty-weight (- 3 (* 1.7 difficulty))
           dbr (if correct?
                 (+ 1 (* (dec difficulty-weight) overdue (+ 0.95 (rand 0.1))))
-                (min 1 (/ 1 (+ 1 (* 3 difficulty)))))]
+                (min 1 (/ 1 (+ 1 (* 3 difficulty)))))
+          ;; adjustment: quick answer delays review by 2 days
+          dbr (if (and correct? (<= answer-time-taken-secs 3))
+                (+ dbr 2)
+                dbr)]
       (SM-2-mod. dbr difficulty now overdue)))
   (compare-stat [a b]
     (or (nil? (:dlr a)) (< (due-date a) (due-date b))))
