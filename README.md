@@ -7,6 +7,7 @@ Train my 倉頡 (Cangjie)
 # Thanks
 
 - 倉頡新星 https://gholk.github.io/cjns/index.html
+  - exercise webpage https://gholk.github.io/cjns/keyExercise.html
 - https://www.hkcards.com/
 - Cangjie character-to-radicals dictionary from https://github.com/rime/rime-cangjie (https://raw.githubusercontent.com/rime/rime-cangjie/master/cangjie5.dict.yaml)
 - Popular usage of Chinese character from https://humanum.arts.cuhk.edu.hk (https://humanum.arts.cuhk.edu.hk/Lexis/lexi-can/faq.php?s=1)

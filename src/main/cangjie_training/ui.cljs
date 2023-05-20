@@ -145,7 +145,7 @@
       [:a.hover:text-blue-600.hover:underline
        {:href (model/chinese-char-lookup-url question-char)
         :target "_blank"
-        :title (str "Find " question-char " in CangJie dictionary")}
+        :title (str "Find " question-char " on www.hkcards.com")}
        question-char]]
      (char-question-parts radicals ans-parts hint-count)
      [:div.pt-4 (char-question-controls radicals ans-parts hint-count)]]))
