@@ -1,6 +1,8 @@
 (ns cangjie-training.event-fx
   (:require [clojure.string :as str]
             [cljs.core.async :as async]
+            [goog.string :as gstring]
+            [goog.string.format]
             [rum.core :as rum]
             [cangjie-training.dictionary :as cj-dict]
             [cangjie-training.learner :as learner]
@@ -110,9 +112,10 @@
 
       :msg/expand-learner-pool
       [model
-       (let [[expand-count] msg-args]
+       (let [[expand-count prompt-message] msg-args]
          {:fx-type :fx/expand-learner-pool
           :expand-count expand-count
+          :prompt-message prompt-message
           :post-fx (fn [learner-db] [[:msg/save-learner-db learner-db]
                                      [:msg/new-question learner-db]])})]
 
@@ -138,14 +141,11 @@
   (model/persist-learner-db! learner-db))
 
 (defmethod do-effect! :fx/expand-learner-pool
-  [_db {:keys [expand-count post-fx]}]
+  [_db {:keys [expand-count prompt-message post-fx]}]
   (if-let [new-chars (seq (model/new-chars-to-learn expand-count
                                                     @model/*learner-db))]
     (when (js/confirm
-           (str "Add these " expand-count " characters to words pool:\n"
-                (str/join " " new-chars)
-                "\n"
-                "Are you sure?"))
+           (gstring/format prompt-message expand-count (str/join " " new-chars)))
       (log "adding" expand-count "items to learner db pool" (str new-chars))
       (post-fx (swap! *learner-db merge (model/init-learner-db new-chars))))
     (js/alert "You have learnt all " (count cj-dict/popular-chinese-chars)

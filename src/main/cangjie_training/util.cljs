@@ -1,5 +1,6 @@
 (ns cangjie-training.util
-  (:require [clojure.string :as str]))
+  (:require [clojure.string :as str]
+            [cangjie-training.languages :as langs]))
 
 ;;; utility
 
@@ -39,14 +40,20 @@
    (.formatToParts (js/Intl.RelativeTimeFormat. "en-HK" #js {"numeric" "auto"})
                    (/ 27 24) "day"))
 
-(defn time-from-now [datetime]
+(defn time-from-now [datetime language]
   (let [hours (hours-diff datetime (js/Date.now))
-        fmt (js/Intl.RelativeTimeFormat. "en-HK" #js {"numeric" "auto"})]
+        fmt (js/Intl.RelativeTimeFormat.
+             ({:cangjie-training.languages/display-lang--chinese "zh-HK"
+               :cangjie-training.languages/display-lang--english "en-HK"}
+              language)
+             #js {"numeric" "auto"})]
     (if (> (js/Math.abs hours) 24)
       (clean-relative-format (.formatToParts fmt (/ hours 24) "day"))
       (if (> (js/Math.abs hours) 1)
         (clean-relative-format (.formatToParts fmt hours "hour"))
-        (if (pos? hours) "soon" "recently")))))
+        (if (pos? hours)
+          (langs/text ::label--soon language)
+          (langs/text ::label--recently language))))))
 #_(time-from-now (js/Date.parse "2022-06-17 12:00"))
 #_(time-from-now (- (js/Date.now) (* 1000 60 60 2)))
 #_(time-from-now (- (js/Date.now) (* 1000 60 60 26)))

@@ -21,11 +21,6 @@
 (defn split-radicals [question-char]
   (-> (radical-dict question-char) (str/split "")))
 
-(defn chinese-char-lookup-url [chinese-character]
-  #_(str "https://www.chinesecj.com/cjdict/index.php?stype=Word&detail=y&sword="
-         chinese-character)
-  (str "https://www.hkcards.com/cj/cj-char-" chinese-character ".html"))
-
 (defn persist-learner-db! [db-json]
   (->> db-json
        clj->js

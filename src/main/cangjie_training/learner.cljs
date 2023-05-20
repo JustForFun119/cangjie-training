@@ -1,5 +1,6 @@
 (ns cangjie-training.learner
-  (:require [cangjie-training.util :refer [days-diff log
+  (:require [cangjie-training.languages :as langs]
+            [cangjie-training.util :refer [days-diff log
                                            rescale time-from-now]]))
 
 ;;; Spaced repetition learning method impl
@@ -12,7 +13,7 @@
   (need-review? [this])
   (need-hint? [this])
   (seems-learnt? [this])
-  (stat-viz-hiccup [this]))
+  (stat-viz-hiccup [this language]))
 
 (defrecord SM-2 [n ef i]
   SpacedRepetitionStat
@@ -45,7 +46,7 @@
     (>= ef 2))
   (seems-learnt? [_this] ; TODO define learnt
     false)
-  (stat-viz-hiccup [_this]
+  (stat-viz-hiccup [_this language]
     {"n ACS2" n "ef ASC3" (.toFixed ef 2) "i ASC1" i}))
 (defn new-SM-2 [] (SM-2. 0 2.5 0))
 
@@ -86,8 +87,8 @@
     (not (seems-learnt? this)))
   (seems-learnt? [_this]
     (< difficulty 0.3))
-  (stat-viz-hiccup [this]
-    {"mastery"
+  (stat-viz-hiccup [this language]
+    {::mastery
      (let [mastery (- 1 difficulty)
            max-rating 3
            num-icons 3
@@ -100,13 +101,13 @@
                 (concat rated-icons
                         (repeat (- num-icons (count rated-icons)) "🌑")))
         #_(str (if (some? mastery) (.toFixed mastery 2) ""))])
-     "last review" (if (some? dlr)
-                     [:span (time-from-now dlr)]
-                     "never")
-     "due" [:span (let [due-date (due-date this)]
+     ::last-review (if (some? dlr)
+                     [:span (time-from-now dlr language)]
+                     (langs/text ::review-never language))
+     ::due [:span (let [due-date (due-date this)]
                     (if (and (some? dlr) (> due-date (js/Date.now)))
-                      [:span (time-from-now due-date)]
-                      "now"))]
+                      [:span (time-from-now due-date language)]
+                      (langs/text ::due-now language)))]
      ;"familiar" [:span.opacity-50 (.toFixed dbr 2)]
      }))
 

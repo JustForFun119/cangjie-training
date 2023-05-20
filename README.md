@@ -1,8 +1,10 @@
 # cangjie-training
 
-Train my 倉頡 (Cangjie)
+Train Cangjie keyboard input, increase typing fluency (Input 🔁 Memorise)
 
-[Try it](https://justforfun119.github.io/cangjie-training/public/index.html)
+訓練倉頡鍵盤指法，提升取碼流暢度 (輸入 🔁 記憶)
+
+[Try it 試下](https://justforfun119.github.io/cangjie-training/public/index.html)
 
 # Thanks
 
@@ -33,7 +35,7 @@ Stored on user's browser local storage only
 
 To practise/learn 倉頡 (Cangjie) input 🀄
 1. Practise Cangjie **radical input** using keyboard
-  - Memorise radical-to-key mapping 記熟倉頡字母鍵位 (鍵盤指法)
+  - Memorise radical key mapping 記熟倉頡字母鍵位 (鍵盤指法)
     - ❔ I don't know which keyboard key to press for entering some Cangjie radical
     - 👨‍💻 practise typing with on-screen keyboard showing keys and Cangjie radicals
     - 倉頡字母 Cangjie radicals
@@ -42,7 +44,7 @@ To practise/learn 倉頡 (Cangjie) input 🀄
       - 人心手口 OPQR
       - 尸廿山女田卜 STUVXY (側並仰紐方卜)
       - 難 X
-  - Train radical extraction fluency 訓練取碼流暢度
+  - Train to radical extraction fluency 訓練以取碼流暢度
     - ❔ I don't know/I am slow at breaking down a Chinese character into Cangjie radicals
     - 👨‍💻 practise by example: write Chinese character with/without radical hints
     - example: to write 2 characters "香港"
@@ -51,3 +53,4 @@ To practise/learn 倉頡 (Cangjie) input 🀄
 2. Apply **spaced repetition learning** method for Cangjie training
   - [SM-2](https://www.supermemo.com/en/archives1990-2015/english/ol/sm2)
   - [modified SM-2](https://www.blueraja.com/blog/477/a-better-spaced-repetition-learning-algorithm-sm2) ([implemented here](src/main/cangjie_training/learner.cljs))
+3. Practical web app written in Clojure/script!
