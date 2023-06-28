@@ -3,7 +3,7 @@
             [cangjie-training.dictionary :refer [popular-chinese-chars
                                                  radical-dict]]
             [cangjie-training.learner :as learner]
-            [cangjie-training.util :refer [hours-diff log rescale]]))
+            [cangjie-training.util :refer [log rescale]]))
 
 ;;; app model
 
@@ -74,12 +74,6 @@
 (defn items-to-review [learner-db]
   (->> learner-db (filter (fn [[_char stat]] (learner/need-review? stat)))))
 
-(defn review-in-next-hours [learner-db next-hours]
-  (let [now (js/Date.now)]
-    (->> learner-db vals
-         (map #(hours-diff (learner/due-date %) now))
-         (filter #(<= % next-hours)))))
-
 (defn learner-progress [learner-db]
   (let [items (vals learner-db)
         total (count items)
@@ -99,16 +93,19 @@
 
 ;;; Chinese character input Q&A
 
+(defn new-question [model character]
+  (assoc model :question-char character :ans-parts [] :hint-count 0
+         :parts-score (-> character split-radicals count (repeat 0) vec)
+         :answered? false
+         :question-start-time (js/Date.now)
+         :viz-page-size viz-page-size-compact))
+
 (defn next-question [model learner-db]
   ;; sort DB to show upcoming card, by how much need to review
   (if-let [review-items (seq (items-to-review learner-db))]
     (let [new-char (->> review-items (sort-by val learner/compare-stat)
                         first key)]
-      (assoc model :question-char new-char :ans-parts [] :hint-count 0
-             :parts-score (-> new-char split-radicals count (repeat 0) vec)
-             :answered? false
-             :question-start-time (js/Date.now)
-             :viz-page-size viz-page-size-compact))
+      (new-question model new-char))
     (do (log "no item to review!")
         (assoc model :question-char nil :ans-parts [] :hint-count 0
                :parts-score nil :answered? false

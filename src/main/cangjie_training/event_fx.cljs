@@ -21,8 +21,10 @@
 
 (defn- key-event->msg [model key-code]
   (cond
+    (= key-code "Backspace") (if (:answered? model)
+                               [:msg/retry-word]
+                               [:msg/delete-last-char])
     (= key-code "Space") [:msg/checked-answer]
-    (= key-code "Backspace") [:msg/delete-last-char]
     (= key-code "Tab") [:msg/show-hint]
     (= key-code "BracketRight") [:msg/viz-next-page]
     (= key-code "BracketLeft") [:msg/viz-prev-page]
@@ -48,6 +50,13 @@
       :msg/new-question
       [(let [[learner-db] msg-args] (model/next-question model learner-db))
        nil]
+
+      ;; question answered: update learner DB, then generate new question
+      :msg/retry-word
+      (if answered?
+        [(model/new-question model (get model :question-char))
+         nil]
+        [model nil])
 
       ;; question answered: update learner DB, then generate new question
       :msg/checked-answer

@@ -5,7 +5,6 @@
             [cangjie-training.model :as model]
             [cangjie-training.languages :as langs]
             [cljs.core.async :as async]
-            [clojure.set :as set]
             [clojure.string :as str]
             [rum.core :as rum]))
 
@@ -16,7 +15,7 @@
 
 (def keyboard-key->hud
   {"Tab" "Tab ⭾"
-   "Backspace" "Backspace <-"
+   "Backspace" "Backspace ←"
    "Space" "Space ␣"
    "BracketLeft" "["
    "BracketRight" "]"
@@ -138,24 +137,27 @@
   [{:keys [question-char ans-parts hint-count] :as model} >event-chan]
   (let [radicals (model/split-radicals question-char)]
     [:div.flex.flex-row.flex-wrap.items-center {:class "gap-3 md:gap-5"}
-   ;; display keyboard control: hint for character part
+     ;; display keyboard control: hint for character part
      (when (< hint-count (count radicals))
        [:span {:on-click #(async/put! >event-chan (event-fx/key-event
                                                    model "Tab"))}
         (keyboard-prompt "Tab" (langs/text ::label--radical-hint
                                            (rum/react *display-language)))])
-   ;; display keyboard control: delete last char, if answer has wrong char
+     ;; display keyboard control: delete last char, if answer is not correct
      (when (and (pos? (count ans-parts))
-                (seq (set/difference (set (take (count ans-parts) radicals))
-                                     (set ans-parts))))
+                (not= (model/split-radicals question-char) ans-parts))
        [:span {:on-click #(async/put! >event-chan (event-fx/key-event
                                                    model "Backspace"))}
         (keyboard-prompt "Backspace" (langs/text ::label--delete-radical
                                                  (rum/react *display-language)))])
-   ;; display keyboard control: play next word
+     ;; display keyboard control: play next word
      (when (= ans-parts radicals)
        [:<>
         [:span.text-2xl.px-4 "✔️"]
+        [:span {:on-click #(async/put! >event-chan (event-fx/key-event
+                                                    model "Backspace"))}
+         (keyboard-prompt "Backspace" (langs/text ::label--retry
+                                                  (rum/react *display-language)))]
         [:span {:on-click #(async/put! >event-chan (event-fx/key-event
                                                     model "Space"))}
          (keyboard-prompt "Space" (langs/text ::label--next-word
