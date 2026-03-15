@@ -113,8 +113,8 @@
     {:class ["w-12 md:w-16 p-2 border-b-8 text-5xl md:text-6xl"
              (if next? "border-slate-400" "border-transparent")
              (when answered? (if correct?
-                               "border-green-800 dark:border-green-600"
-                               "border-red-800 dark:border-red-600"))]}
+                               "border-green-600 dark:border-green-600"
+                               "border-red-600 dark:border-red-600"))]}
     (if hint? "?" (model/keyboard-key->cj-part radical))]])
 
 (rum/defc char-question-parts < rum/static
