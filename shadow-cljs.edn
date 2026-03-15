@@ -4,8 +4,10 @@
 
  :dependencies [[rum "0.12.9"]]
 
- :dev-http {8080 "public"}
+ :dev-http {8080 "docs"}
 
  :builds {:app
           {:target :browser
+           :output-dir "docs/js"
+           :module-hash-names 8
            :modules {:main {:init-fn cangjie-training.app/init}}}}}

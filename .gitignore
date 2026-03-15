@@ -27,5 +27,5 @@ src/*.edn
 .calva/
 .clj-kondo/
 .lsp/
-public/js/cljs-runtime/
+docs/js/cljs-runtime/
 *.js.map

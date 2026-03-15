@@ -4,7 +4,7 @@ Train Cangjie keyboard input, increase typing fluency (Input 🔁 Memorise)
 
 訓練倉頡鍵盤指法，提升取碼流暢度 (輸入 🔁 記憶)
 
-[Try it 試下](https://justforfun119.github.io/cangjie-training/public/index.html)
+[Try it 試下](https://justforfun119.github.io/cangjie-training/index.html)
 
 # Thanks
 

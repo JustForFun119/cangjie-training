@@ -1,12 +1,13 @@
 module.exports = {
-	globDirectory: 'public/',
+	globDirectory: 'docs/',
 	globPatterns: [
-		'**/*.{html,js}'
+		'**/*.js'
 	],
 	globIgnores: [
-		'js/cljs-runtime/*'
+		'js/cljs-runtime/*',
+		'js/main.js'
 	],
-	swDest: 'public/sw.js',
+	swDest: 'docs/sw.js',
 	ignoreURLParametersMatching: [
 		/^utm_/,
 		/^fbclid$/
